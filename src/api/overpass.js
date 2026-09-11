@@ -1,8 +1,8 @@
 import { haversineKm } from '../utils/geo'
 
 const OVERPASS_MIRRORS = [
-  'https://overpass-api.de/api/interpreter',
-    'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+    'https://overpass-api.de/api/interpreter',
       'https://overpass.openstreetmap.ru/api/interpreter',
       ]
 
@@ -11,7 +11,7 @@ const OVERPASS_MIRRORS = [
           for (const url of OVERPASS_MIRRORS) {
               try {
                     const controller = new AbortController()
-                          const timeout = setTimeout(() => controller.abort(), 12000)
+                          const timeout = setTimeout(() => controller.abort(), 15000)
                                 const res = await fetch(url, {
                                         method: 'POST',
                                                 body: 'data=' + encodeURIComponent(query),
@@ -28,11 +28,8 @@ const OVERPASS_MIRRORS = [
                                                                                                         throw lastError || new Error('All Overpass mirrors failed')
                                                                                                         }
 
-                                                                                                        // Queries OpenStreetMap's Overpass API for hospitals within `radius` meters
-                                                                                                        // of the given coordinates. Free, no API key required. Tries multiple
-                                                                                                        // mirrors in sequence since the main public server can be flaky.
                                                                                                         export async function fetchNearbyHospitals(lat, lon, radius = 8000) {
-                                                                                                          const query = `[out:json][timeout:20];
+                                                                                                          const query = `[out:json][timeout:25];
                                                                                                               (
                                                                                                                     node["amenity"="hospital"](around:${radius},${lat},${lon});
                                                                                                                           way["amenity"="hospital"](around:${radius},${lat},${lon});
